@@ -6,8 +6,6 @@ import view4 from "../../assets/bg/6.JPG";
 import view5 from "../../assets/bg/7.JPG";
 import view6 from "../../assets/bg/8.JPG";
 
-import styles from "./Gallery.module.css";
-
 const Gallery = () => {
   return (
     <div className="row">

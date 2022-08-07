@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Container } from "react-bootstrap";
-import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
+import { MDBTable, MDBTableBody } from "mdb-react-ui-kit";
 import Layout from "../../Layout/Layout";
 
 import styles from "./Home.module.css";
