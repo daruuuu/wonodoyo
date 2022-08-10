@@ -17,7 +17,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      console.log("Berhasil login");
+      toast.success("Login Berhasil");
       navigate("/");
     } catch (error) {
       toast("Login gagal", { type: "error" });

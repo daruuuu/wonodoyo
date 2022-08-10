@@ -1,9 +1,11 @@
 import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import styles from "./Navbar.module.css";
+import { toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
+
+import styles from "./Navbar.module.css";
 
 function Navigation() {
   const [user] = useAuthState(auth);
@@ -51,26 +53,27 @@ function Navigation() {
                 </Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item>
-                {!user && (
+              {!user && (
+                <NavDropdown.Item>
                   <Link className="text-black" to="/login">
                     Login
                   </Link>
-                )}
-              </NavDropdown.Item>
-              <NavDropdown.Item>
-                {user && (
+                </NavDropdown.Item>
+              )}
+              {user && (
+                <NavDropdown.Item>
                   <Button
                     className="text-white"
                     style={{ backgroundColor: "#527348" }}
                     onClick={() => {
                       signOut(auth);
+                      toast.success("Logout Berhasil");
                     }}
                   >
                     Logout
                   </Button>
-                )}
-              </NavDropdown.Item>
+                </NavDropdown.Item>
+              )}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
