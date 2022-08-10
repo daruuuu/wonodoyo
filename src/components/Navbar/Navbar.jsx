@@ -52,9 +52,11 @@ function Navigation() {
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item>
-                <Link className="text-black" to="/login">
-                  Login
-                </Link>
+                {!user && (
+                  <Link className="text-black" to="/login">
+                    Login
+                  </Link>
+                )}
               </NavDropdown.Item>
               <NavDropdown.Item>
                 {user && (
