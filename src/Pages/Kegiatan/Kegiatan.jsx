@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import {
   MDBBtn,
   MDBModal,
@@ -18,8 +18,9 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { Container, Form } from "react-bootstrap";
-import { db, storage } from "../../firebaseConfig";
+import { db, storage, auth } from "../../firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 import Layout from "../../Layout/Layout";
 
@@ -27,7 +28,7 @@ import styles from "./Kegiatan.module.css";
 import FAB from "../../components/Navbar/FAB";
 import { toast } from "react-toastify";
 
-import DeleteButton from "../../components/DeleteButton/DeleteButton";
+const Card = lazy(() => import("../../components/Card/Card"));
 
 const Kegiatan = () => {
   const [kegiatan, setKegiatan] = useState([]);
@@ -39,6 +40,8 @@ const Kegiatan = () => {
     image: "",
     createdAt: Timestamp.now().toDate(),
   });
+
+  const [user] = useAuthState(auth);
 
   const toggleShow = () => setBasicModal(!basicModal);
 
@@ -103,58 +106,6 @@ const Kegiatan = () => {
     );
   };
 
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     if (formData.title === "" || formData.description === "" || image === "") {
-  //       alert("Form harus diisi semua");
-  //       return;
-  //     }
-
-  //     const storageRef = ref(storage, `/image/${Date.now()}${image.name}`);
-
-  //     const uploadImg = uploadBytesResumable(storageRef, image);
-
-  //     uploadImg.on(
-  //       "state_changed",
-  //       (snapshot) => {
-  //         const progressPercent = Math.round(
-  //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-  //         );
-  //         setProgress(progressPercent);
-  //       },
-  //       (err) => {
-  //         console.log(err);
-  //       },
-  //       () => {
-  //         setFormData({
-  //           title: "",
-  //           description: "",
-  //         });
-  //         setImage(null);
-
-  //         getDownloadURL(uploadImg.snapshot.ref).then((url) => {
-  //           const kegiatanRef = collection(db, "kegiatan");
-  //           addDoc(kegiatanRef, {
-  //             title: formData.title,
-  //             description: formData.description,
-  //             image: url,
-  //             createdAt: Timestamp.now().toDate(),
-  //           })
-  //             .then(() => {
-  //               toast("Kegiatan berhasil ditambahkan", {
-  //                 type: "success",
-  //               });
-  //             })
-  //             .catch((err) => {
-  //               toast("Ada kesalahan", {
-  //                 type: "error",
-  //               });
-  //             });
-  //         });
-  //       }
-  //     );
-  //   };
-
   useEffect(() => {
     const kegiatanRef = collection(db, "kegiatan");
     const q = query(kegiatanRef, orderBy("createdAt", "desc"));
@@ -164,7 +115,6 @@ const Kegiatan = () => {
         ...doc.data(),
       }));
       setKegiatan(kegiatan);
-      console.log(kegiatan);
     });
   }, []);
 
@@ -176,20 +126,23 @@ const Kegiatan = () => {
         </Container>
       ) : (
         kegiatan.map(({ createdAt, id, description, title, imgUrl }) => (
-          <Container key={id} className={`${styles.card} my-5`}>
-            <div className="text-center mb-3">
-              <img
-                style={{ width: "100%", height: "350px", objectFit: "cover" }}
-                src={imgUrl}
-                alt="kegiatan"
-                className={styles.img}
-              />
-            </div>
-            <h2 style={{ color: "#52734D" }}>{title}</h2>
-            <p className="text-muted">{createdAt.toDate().toDateString()}</p>
-            <p style={{ color: "#52734D" }}>{description}</p>
-            <DeleteButton id={id} imgUrl={imgUrl} />
-          </Container>
+          <Suspense
+            fallback={
+              <Container className="d-flex justify-content-center align-items-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </Container>
+            }
+          >
+            <Card
+              id={id}
+              imgUrl={imgUrl}
+              title={title}
+              createdAt={createdAt}
+              description={description}
+            />
+          </Suspense>
         ))
       )}
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
@@ -277,7 +230,7 @@ const Kegiatan = () => {
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
-      <FAB onclick={toggleShow} />
+      {user && <FAB onclick={toggleShow} />}
     </Layout>
   );
 };

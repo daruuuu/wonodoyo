@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Statistic from "./Pages/Statisctic/Statistic";
 import Gallery from "./Pages/Gallery/Gallery";
 import Kegiatan from "./Pages/Kegiatan/Kegiatan";
+import Login from "./Pages/Login/Login";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/statistic" element={<Statistic />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/kegiatan" element={<Kegiatan />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

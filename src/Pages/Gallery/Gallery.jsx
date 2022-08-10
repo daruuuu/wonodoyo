@@ -46,6 +46,7 @@ const Gallery = () => {
               alt="view"
               key={index}
               onClick={() => setSelectedImg(img)}
+              loading="lazy"
             />
           ))}
         </Container>

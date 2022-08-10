@@ -32,6 +32,7 @@ const Profile = () => {
                 src={view}
                 className="figure-img img-fluid rounded"
                 alt="..."
+                loading="lazy"
               />
             </figure>
             <figure className="figure">
@@ -39,6 +40,7 @@ const Profile = () => {
                 src={view2}
                 className="figure-img img-fluid rounded"
                 alt="..."
+                loading="lazy"
               />
             </figure>
             <Container

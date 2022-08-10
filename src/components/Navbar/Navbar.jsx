@@ -1,8 +1,13 @@
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebaseConfig";
+import { signOut } from "firebase/auth";
 
 function Navigation() {
+  const [user] = useAuthState(auth);
+
   return (
     <Navbar
       collapseOnSelect
@@ -44,6 +49,25 @@ function Navigation() {
                 <Link className="text-black" to="/kegiatan">
                   Kegiatan
                 </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item>
+                <Link className="text-black" to="/login">
+                  Login
+                </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                {user && (
+                  <Button
+                    className="text-white"
+                    style={{ backgroundColor: "#527348" }}
+                    onClick={() => {
+                      signOut(auth);
+                    }}
+                  >
+                    Logout
+                  </Button>
+                )}
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

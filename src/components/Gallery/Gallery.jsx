@@ -14,12 +14,14 @@ const Gallery = () => {
           src={view5}
           className="w-100 shadow-1-strong rounded mb-4"
           alt=""
+          loading="lazy"
         />
 
         <img
           src={view3}
           className="w-100 shadow-1-strong rounded mb-4"
           alt=""
+          loading="lazy"
         />
       </div>
 
@@ -28,12 +30,14 @@ const Gallery = () => {
           src={view1}
           className="w-100 shadow-1-strong rounded mb-4"
           alt=""
+          loading="lazy"
         />
 
         <img
           src={view4}
           className="w-100 shadow-1-strong rounded mb-4"
           alt=""
+          loading="lazy"
         />
       </div>
 
@@ -42,12 +46,14 @@ const Gallery = () => {
           src={view6}
           className="w-100 shadow-1-strong rounded mb-4"
           alt=""
+          loading="lazy"
         />
 
         <img
           src={view2}
           className="w-100 shadow-1-strong rounded mb-4"
           alt=""
+          loading="lazy"
         />
       </div>
     </div>
